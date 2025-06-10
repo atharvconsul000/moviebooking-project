@@ -1,0 +1,71 @@
+
+/*padding = 50px;
+  padding= 2 3 4 5 ; */
+/* * is universal selector, we can select on the basis 
+of elements, class , or id (with increasing priority) */
+/* different typess of display property are-
+1)block - each element takes up 100% of the width , and goes on the next line 
+2)inline - each element only takes up as much space as the content inside it.
+3)inline-block- has both properties of linline and block(can also set params like min and max width for more control 
+4)display-none(just makes that particular element invisible , without leaving excess space for it
+5)visibility-hidden se element gayab ho jata hai but jagah rhti hai 
+6)RGBA-A gives value for opacity
+7)two types of units mei value set kr sktein hain that is absolute jismei the boxes do not adjust with the tab size , or relative to the tab size for eg -
+   a)percenatge which sets the value relative to the parent object width and height.
+   b)em and rem , em sets font size reletive to the parent element , rem sets size according to the outermost tag eg body tag , header tag etc(default size for body tag is 16px) 
+   c)vh- relative to 1% viewport height   ie the current height of the tab
+   d)vw - reletive to the viewport width
+8)we can also set position in reletive and absolute terms 
+  a)static - deafult position is set cannot change even manually'
+  b)relative-element is positioned reletive to its default pos
+  c)absolute-positioned reletive to its nearest parent
+  d)fixed-relative to browser(does not move on srolling)
+  e)sticky-postioned based on user scroll ie its sticks in place in pos afer it comes in correct pos
+  f)we can also give z index , to decide which element comes at top on overlap
+9)background-img setting ,backrgound size resizing img wrt to cointainer.(cover(fully fits img  not be complete) and cointian (displays full img)
+10)In flexbox first decide which element will be flex cointainer and which will be flex item
+11)use justify-content for adjustement along main axis and align items for adjustment along cross axis
+12)align self has higher priority than align item 
+13)options avaible to fill empty space of the boxes , by growing and shrinking of boxed whose reletive speeds can be adjusted 
+14)options for equally spacing out flex items along a axis , or give unique to allginments to each of the flex items
+15)Creating responsive websites that adjust their design according to the screen size for that use media query using width(min width,width,max width, width range etc)
+16)adjust fontsize, layout, box sizes according to screen size
+17)Flexbox is generally used for when we want to create a row and coloumn sort of format.
+18)Can check how your setup would look on various devices on inspecting(for eg iphone,macbook,ipad etc)
+//adding transitions and animations
+19) we can create pseudoclasses for elements to apply different styling when in different states such as -
+   1)hover
+   2)active
+   3)click
+20)Also set various properties for transitions such as 
+   1)transition duration 
+   2)transition timing function(ease in/ ease out /linear all create different effects) 
+   3)transition-delay
+Various Applications
+   1)We can even roatate elements , we use the transform rotate(x degrees ) syntax( it also rotates all the elements present inside) also can use rotate : axis ... degree.(used to perform 3d rotations)
+   2)Use transform: scale (x_val,y_val,z_val); to scale the element in each axis accoridngly
+   3)use tranlate (x_val,y_val) for movement in 2d plane 
+   4)use skew to apply deformation to element (tangential deformation)
+Another syntax
+    1)first build a general blue print for your animations using syntax 
+    @keyframes animation_name{
+    to-define intial properties
+    from-define final properites}
+    2)use 
+    animtion-name
+    animtion-duartaion
+    animtion-timing-function
+    animation-delay
+    animation-iteration-count-(no of times the animations repeats for eg set infinite to make blinking lights)
+    animation direction - 1)forward
+                          2)reverse
+                          3)alternate
+                          4)alternate reverse(eg use alternate to create repeated animation for bouncy ball ,executes infinetely if iteration count set to infinity)
+                          
+    3)call this in whichever class/ pseudo class you want to use
+
+*percentage animation - Instead of defining to and from in animation, we can define different properties for different percentage inetervals (creating an effect such that it transits through multiple stages/properties)
+FLEX WRAP
+   When there are too many flex items to fit in one line inside the container’s width, with flex-wrap: wrap, the extra items will flow onto a new line.
+
+   Each line acts like a separate flex line and respects alignment properties independently.
