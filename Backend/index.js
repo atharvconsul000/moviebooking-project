@@ -6,34 +6,45 @@ const cors = require("cors");
 const adminRouter = require('./route/admin');
 const userRouter = require('./route/user');
 
-// Load environment variables
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5500',
+  'https://moviebookingfrontend.vercel.app',
+  'https://moviebookingfrontend-git-main-atharv-consuls-projects.vercel.app'
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+
+
+console.log("hello");
 const MONGO_URI = process.env.MONGO_URI;
 
-
 mongoose.connect(MONGO_URI)
-  .then(() => console.log("✅ Connected"))
-  .catch(err => console.log("❌ Error:", err));
+  .then(() => console.log("Connected"))
+  .catch(err => console.log("Error:", err));
 
-
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Route definitions
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 
-// Health check / root route
 app.get("/", (req, res) => {
-  res.send("🎬 Movie Booking API is running!");
+  res.send("Movie Booking API is running");
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

@@ -17,7 +17,7 @@ function parseJwt(token) {
     const password = document.getElementById("password").value;
 
     try {
-      const res = await fetch("http://localhost:3000/user/signin", {
+      const res = await fetch("https://movie-booking-backend-7oy8.onrender.com/user/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -30,7 +30,6 @@ function parseJwt(token) {
       if (data.token) {
         localStorage.setItem("token", data.token);
 
-        // Decode JWT to get role
         const decoded = parseJwt(data.token);
         const role = decoded.role;
 

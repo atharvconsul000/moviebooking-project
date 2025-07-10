@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-
-
 const UserSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
@@ -16,7 +14,8 @@ const MovieSchema = new mongoose.Schema({
     totalSeats: Number,
     availableSeats: Number,
     image: String, 
-    houseFull: { type: Boolean, default: false }
+    houseFull: { type: Boolean, default: false},
+    link:String
 });
 
 const BookingSchema = new mongoose.Schema({
@@ -26,14 +25,22 @@ const BookingSchema = new mongoose.Schema({
     bookingTime: { type: Date, default: Date.now }
 });
 
-// Create models
+const ReviewSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  movie: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie', required: true },
+  movieName: { type: String, required: true },
+  rating: { type: Number, min: 0, max: 5, required: true },
+  comment: { type: String, maxlength: 100 }
+}, { timestamps: true });
+
 const User = mongoose.model('User', UserSchema);
 const Movie = mongoose.model('Movie', MovieSchema);
 const Booking = mongoose.model('Booking', BookingSchema);
+const Review = mongoose.model('Review', ReviewSchema);
 
-// Export models
 module.exports = {
     User,
     Movie,
-    Booking
+    Booking,
+    Review
 };

@@ -21,7 +21,7 @@
 
     h2 {
       font-size: 2.5rem;
-      color: #1DB954; /* Spotify Green */
+      color: #1DB954; 
       margin-bottom: 30px;
     }
 
@@ -77,8 +77,13 @@
     <input type="text" id="time" placeholder="Show Time (e.g., 7:00 PM)" required />
     <input type="number" id="totalSeats" placeholder="Total Seats" min="1" required />
     <input type="url" id="image" placeholder="Image URL" required />
+    <input type="url" id="link" placeholder="YouTube Trailer Link (optional)" />
     <button type="submit">Add Movie</button>
   </form>
+
+  <a href="admin-dashboard.html">
+  <button>Go to Dashboard</button>
+  </a>
 
   <script>
     document.getElementById("addMovieForm").addEventListener("submit", async function (e) {
@@ -88,6 +93,7 @@
       const time = document.getElementById("time").value;
       const totalSeats = parseInt(document.getElementById("totalSeats").value);
       const image = document.getElementById("image").value;
+      const link = document.getElementById("link").value;
 
       const token = localStorage.getItem("token");
       if (!token) {
@@ -97,13 +103,13 @@
       }
 
       try {
-        const res = await fetch("http://localhost:3000/admin/add-movie", {
+        const res = await fetch("https://movie-booking-backend-7oy8.onrender.com/admin/add-movie", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify({ name, time, totalSeats, image })
+          body: JSON.stringify({ name, time, totalSeats, image,link})
         });
 
         const data = await res.json();

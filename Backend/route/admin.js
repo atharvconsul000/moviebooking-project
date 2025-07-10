@@ -2,20 +2,20 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { User, Movie, Booking } = require("../db/index");
+const { User, Movie, Booking ,Review} = require("../db/index");
 const authenticateJWT = require("../middleware/auth");
 const isAdmin = require("../middleware/admin");
 require("dotenv").config();
 
-// 🔐 Admin signin (no signup)
+
 router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
     const admin = await User.findOne({ email, role: "admin" });
-    if (!admin) return res.status(404).json({ message: "Admin not found" });
+    if (!admin) return res.status(400).json({ message: "Admin not found" });
 
     const valid = await bcrypt.compare(password, admin.password);
-    if (!valid) return res.status(401).json({ message: "Invalid password" });
+    if (!valid) return res.status(400).json({ message: "Invalid password" });
 
     const token = jwt.sign(
       { id: admin._id, email: admin.email, role: admin.role },
@@ -29,9 +29,9 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-// 🎬 Add new movie (with image URL)
+
 router.post("/add-movie", authenticateJWT, isAdmin, async (req, res) => {
-  const { name, time, totalSeats, image } = req.body;
+  const { name, time, totalSeats, image ,link} = req.body;
 
   try {
     const movie = new Movie({
@@ -39,17 +39,18 @@ router.post("/add-movie", authenticateJWT, isAdmin, async (req, res) => {
       time,
       totalSeats,
       availableSeats: totalSeats,
-      image // this is now just a string URL
+      image,
+      link
     });
 
     await movie.save();
-    res.status(201).json({ message: "Movie added", movie });
+    res.status(200).json({ message: "Movie added", movie });
   } catch (err) {
     res.status(500).json({ message: "Failed to add movie", error: err.message });
   }
 });
 
-// 🧾 Get all movies (admin view)
+
 router.get("/movies", authenticateJWT, isAdmin, async (req, res) => {
   try {
     const movies = await Movie.find();
@@ -59,7 +60,7 @@ router.get("/movies", authenticateJWT, isAdmin, async (req, res) => {
   }
 });
 
-// ❌ Delete a movie (only if no bookings exist)
+
 router.delete("/delete-movie/:movieId", authenticateJWT, isAdmin, async (req, res) => {
   const { movieId } = req.params;
 
@@ -69,11 +70,13 @@ router.delete("/delete-movie/:movieId", authenticateJWT, isAdmin, async (req, re
       return res.status(404).json({ message: "Movie not found" });
     }
    await Booking.deleteMany({movieId});
+   await Review.deleteMany({ movie: movieId });
     res.json({ message: "Movie deleted successfully", movie: deletedMovie });
   } catch (err) {
     res.status(500).json({ message: "Failed to delete movie", error: err.message });
   }
 });
+
 router.patch('/movies/:id', authenticateJWT, isAdmin, async (req, res) => {
   try {
     const updated = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });

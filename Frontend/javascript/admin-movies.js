@@ -1,4 +1,3 @@
-
 (async () => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -7,7 +6,7 @@
     return;
   }
   try {
-    const res = await fetch("http://localhost:3000/admin/movies", {
+    const res = await fetch("https://movie-booking-backend-7oy8.onrender.com/admin/movies", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -24,6 +23,7 @@
         <input type="text" value="${movie.time}" disabled id="time-${movie._id}" />
         <input type="number" value="${movie.availableSeats}" disabled id="seats-${movie._id}" />
         <input type="text" value="${movie.image}" disabled id="image-${movie._id}" />
+        <input type="url" value="${movie.link || ''}" disabled id="link-${movie._id}" placeholder="YouTube trailer link" />
         <button class="updateBtn" data-movie-id="${movie._id}">Edit</button>
         <button class="deleteBtn" data-movie-id="${movie._id}">Delete</button>
       `;
@@ -36,22 +36,22 @@
         const movieId = button.getAttribute("data-movie-id");
         const isEdit = button.innerText === "Edit";
 
-        const fields = ["name", "time", "seats", "image"];
+        const fields = ["name", "time", "seats", "image", "link"];
         fields.forEach(field => {
           document.getElementById(`${field}-${movieId}`).disabled = !isEdit;
         });
 
         if (!isEdit) {
-          // Save update
           const updatedMovie = {
             name: document.getElementById(`name-${movieId}`).value,
             time: document.getElementById(`time-${movieId}`).value,
             availableSeats: Number(document.getElementById(`seats-${movieId}`).value),
-            image: document.getElementById(`image-${movieId}`).value
+            image: document.getElementById(`image-${movieId}`).value,
+            link: document.getElementById(`link-${movieId}`).value
           };
 
           try {
-            await fetch(`http://localhost:3000/admin/movies/${movieId}`, {
+            await fetch(`https://movie-booking-backend-7oy8.onrender.com/admin/movies/${movieId}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -76,10 +76,8 @@
       button.addEventListener("click", async () => {
         const movieId = button.getAttribute("data-movie-id");
 
-        //if (!confirm("Are you sure you want to delete this movie?")) return;
-
         try {
-          await fetch(`http://localhost:3000/admin/delete-movie/${movieId}`, {
+          await fetch(`https://movie-booking-backend-7oy8.onrender.com/admin/delete-movie/${movieId}`, {
             method: "DELETE",
             headers: {
               "Authorization": `Bearer ${token}`
@@ -93,7 +91,6 @@
         }
       });
     });
-
   } catch (err) {
     alert("Failed to load movies");
     console.error(err);

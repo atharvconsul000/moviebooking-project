@@ -3,7 +3,7 @@ document.getElementById("SignUpButton").addEventListener("click",async function(
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const res = await fetch("http://localhost:3000/user/signup",{
+    const res = await fetch("https://movie-booking-backend-7oy8.onrender.com/user/signup",{
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({name,email,password}),
